@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birds of Paradise - 404 Error</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style> 
+        body {
+            font-family: "Montserrat", sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('background.png'); 
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            text-align: center;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center; 
+            background-color: #ffffff;
+            padding: 15px 30px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+            position: relative; 
+            height: 70px; 
+        }
+
+        .nav-left, .nav-right {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .nav-center {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
+
+        .nav-center .logo img {
+            height: 40px; 
+            width: auto; 
+            vertical-align: middle; 
+        }
+
+        .navbar a {
+            text-decoration: none;
+            color: #333;
+            font-size: 14px;
+            font-weight: 500; 
+        }
+
+        .error-container {
+            padding: 50px;
+        }
+
+        .error-container h1 {
+            font-size: 48px;
+            color: #540505;
+            font-weight:700; 
+        }
+
+        .error-container p {
+            font-size: 20px;
+            color: #520000;
+            font-weight: 300; 
+        }
+
+        #game-board {
+            display: grid;
+            grid-template-columns: repeat(4, 100px);
+            gap: 10px;
+            justify-content: center;
+            margin: 30px auto;
+        }
+
+        .card {
+            width: 100px;
+            height: 100px;
+            background-color: #e0e0e0;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff9f9;
+            cursor: pointer;
+            user-select: none;
+            position: relative; 
+            overflow: hidden; 
+        }
+
+        .card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+            border-radius: 8px; 
+        }
+
+        .card.flipped img {
+            display: block;
+        }
+
+        .card.flipped {
+            background-color: transparent; 
+            color: transparent; 
+        }
+
+        #attempts {
+            margin-top: 20px;
+            font-size: 20px;
+            color: #670000;
+        }
+        #game-link {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+
+        #game-link a {
+            color: #540505;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        #game-link a:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="#">Shops</a>
+            <a href="#">Our Story</a>
+            <a href="#">Boutiques</a>
+            <a href="#">Community</a>
+            <a href="#">Events</a>
+            <a href="#">Join Us</a>
+        </div>
+        <div class="nav-center">
+            <a href="#" class="logo">
+                <img src="BOPLOGO.png" alt="Birds of Paradise Logo" style="height: 95px; width: auto;"></a>
+        </div>
+        <div class="nav-right">
+            <a href="#">Account</a>
+            <a href="#">Search</a>
+            <a href="#">Cart</a>
+        </div>
+    </nav>
+
+    <div class="error-container">
+        <h1>404</h1>
+        <h1>Page Not Found</h1>
+        <p>Oops! It looks like you were lost in the Birds of Paradise.</p>
+        <p>While you're here, how about a game? Match the ice cream flavors!</p>
+
+        <div id="game-board"></div>
+
+        <div id="attempts">
+            Attempts: <span id="attempts-left">5</span>
+        </div>
+        <div id="game-link">
+            <p>Finished the game? Head back to our <a href="https://birdsofparadise.sg" id="home-link">homepage</a>!</p>
+        </div>
+    </div>
+
+    <script>
+        const flavors = [
+            "White Chrysanthemum", "Coconut Sorbet", "Lychee Raspberry", "Dark Chocolate Sorbet",
+            "Hazelnut", "Midnight Gianduja", "Osmanthus Pear Sorbet", "Pistachio",
+            "Roasted Sesame", "Sea Salt Hojicha", "Spiced Pear", "Strawberry Basil", "Vanilla Fig"
+        ];
+
+        let attemptsLeft = 5;
+        let firstCard = null;
+        let secondCard = null;
+
+        const flavorImages = {
+            "White Chrysanthemum": "whitechrysanthemumicecream.png",
+            "Coconut Sorbet": "coconutsorbet.png",
+            "Lychee Raspberry": "lycheeraspberryicecream.png",
+            "Dark Chocolate Sorbet": "darkchocolatesorbet.png",
+            "Hazelnut": "hazelnuticecream.png",
+            "Midnight Gianduja": "midnightgiandujaicecream.png",
+            "Osmanthus Pear Sorbet": "osmanthuspearsorbet.png",
+            "Pistachio": "pistachioicecream.png",
+            "Roasted Sesame": "roastedsesameicecream.png",
+            "Sea Salt Hojicha": "seasalthojichaicecream.png",
+            "Spiced Pear": "spicedpearicecream.png",
+            "Strawberry Basil": "strawberrybasilicecream.png",
+            "Vanilla Fig": "vanillafigicecream.png"
+        };
+
+        function createCard(flavor) {
+            const card = document.createElement("div");
+            card.classList.add("card");
+            card.dataset.flavor = flavor;
+
+            const img = document.createElement("img");
+            img.src = `${flavorImages[flavor]}`;
+            img.alt = flavor;
+
+            card.appendChild(img);
+            card.addEventListener("click", onCardClick);
+            return card;
+        }
+
+        function shuffle(array) {
+            return array.sort(() => Math.random() - 0.5);
+        }
+
+        function onCardClick(event) {
+            const clickedCard = event.currentTarget;
+
+            if (clickedCard.classList.contains("flipped")) {
+                return;
+            }
+
+            clickedCard.classList.add("flipped");
+
+            if (!firstCard) {
+                firstCard = clickedCard;
+            } else {
+                secondCard = clickedCard;
+
+                if (firstCard.dataset.flavor === secondCard.dataset.flavor) {
+                    firstCard.removeEventListener("click", onCardClick);
+                    secondCard.removeEventListener("click", onCardClick);
+                    resetSelection();
+                } else {
+                    attemptsLeft--;
+                    document.getElementById("attempts-left").innerText = attemptsLeft;
+
+                    if (attemptsLeft === 0) {
+                        revealAllCards();
+                        setTimeout(() => {
+                            window.location.href = "story.html";
+                        }, 2000);
+                    } else {
+                        setTimeout(resetSelection, 1000);
+                    }
+                }
+            }
+        }
+
+        function resetSelection() {
+            if (firstCard && secondCard) {
+                firstCard.classList.remove("flipped");
+                secondCard.classList.remove("flipped");
+            }
+            firstCard = null;
+            secondCard = null;
+        }
+
+        function revealAllCards() {
+            const allCards = document.querySelectorAll(".card");
+            allCards.forEach(card => card.classList.add("flipped"));
+        }
+
+        function preloadImages(images) {
+            for (let src in images) {
+                const img = new Image();
+                img.src = images[src];
+            }
+        }
+
+        preloadImages(flavorImages);
+
+        function initializeGame() {
+            const gameBoard = document.getElementById("game-board");
+            const shuffledFlavors = shuffle([...flavors, ...flavors]);
+
+            shuffledFlavors.forEach(flavor => {
+                const card = createCard(flavor);
+                gameBoard.appendChild(card);
+            });
+        }
+
+        initializeGame();
+    </script>
+</body>
+</html>
+
